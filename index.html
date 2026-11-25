@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ivy Forge Games — Cosy UK Indie Micro-Publisher</title>
+  <meta name="description" content="Independent UK micro-publisher helping indie developers cross the final stretch to launch with marketing, porting, fee coverage, hands on QA, and creator outreach." />
+
+  <link rel="icon" type="image/png" href="sword-ivy.png" />
+  <link rel="apple-touch-icon" href="sword-ivy.png" />
+  <meta property="og:title" content="Ivy Forge Games — UK Indie Micro-Publisher" />
+  <meta property="og:description" content="Helping you get your game out there. Marketing, porting, fee coverage up to £500, hands on QA, and creator outreach for 80–95% complete builds." />
+  <meta property="og:image" content="sword-ivy.png" />
+  <meta property="og:url" content="https://ivyforgegames.com" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest: #151A13;
+      --forest-mid: #1E251B;
+      --forest-card: #242D20;
+      --parchment: #F4EFE4;
+      --parchment-tint: #EAE2D3;
+      --ink-dark: #1C2219;
+      --ink-light: #F6F2E9;
+      --muted: #B6C1B0;
+      --moss: #84B56C;
+      --amber: #E5A45B;
+      --line: rgba(244, 239, 228, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::selection {
+      background: var(--moss);
+      color: var(--ink-dark);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #10140E;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #35442E;
+      border-radius: 999px;
+      border: 2px solid #10140E;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--moss);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--forest);
+      color: var(--ink-light);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(132, 181, 108, 0.08), transparent 45%),
+        radial-gradient(circle at 80% 75%, rgba(229, 164, 91, 0.07), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #fireflies {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Welcome Curtain Intro */
+    #welcome-screen {
+      position: fixed;
+      inset: 0;
+      background: #10140E;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.45s ease;
+    }
+
+    #welcome-screen.hide {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #welcome-screen.done {
+      display: none !important;
+      pointer-events: none !important;
+    }
+
+    .intro-emblem {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      animation: introPop 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+    }
+
+    .intro-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: 1.65rem;
+      letter-spacing: 0.02em;
+      color: var(--parchment);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    .intro-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      color: var(--amber);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.35s forwards;
+    }
+
+    @keyframes introPop {
+      0% { opacity: 0; transform: scale(0.75) rotate(-8deg); }
+      70% { opacity: 1; transform: scale(1.05) rotate(2deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Header */
+    header {
+      padding: 22px 0;
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1.5px dashed var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--parchment);
+      cursor: pointer;
+    }
+
+    .tag-pill {
+      background: var(--moss);
+      color: var(--ink-dark);
+      font-family: 'Caveat', cursive;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 2px 11px;
+      border-radius: 999px;
+      transform: rotate(-3deg);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    nav a:hover {
+      color: var(--amber);
+    }
+
+    .sfx-toggle {
+      background: var(--forest-mid);
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .sfx-toggle.on {
+      border-color: var(--moss);
+      color: var(--moss);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 44px 0 34px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.85fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .scribble {
+      font-family: 'Caveat', cursive;
+      font-size: 1.65rem;
+      color: var(--amber);
+      display: inline-block;
+      transform: rotate(-2deg);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      line-height: 1.06;
+      color: var(--parchment);
+      margin-bottom: 18px;
+    }
+
+    h1 em {
+      color: var(--moss);
+      font-style: italic;
+    }
+
+    .hero-copy {
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 52ch;
+      margin-bottom: 28px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn-primary {
+      background: var(--parchment);
+      color: var(--ink-dark);
+      font-weight: 700;
+      padding: 15px 26px;
+      border-radius: 14px;
+      box-shadow: 0 5px 0 var(--moss);
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 var(--moss);
+    }
+
+    .btn-primary:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 var(--moss);
+    }
+
+    .btn-secondary {
+      background: var(--forest-mid);
+      color: var(--parchment);
+      font-weight: 600;
+      padding: 15px 22px;
+      border-radius: 14px;
+      border: 1.5px dashed var(--line);
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      transform: translateY(-2px);
+    }
+
+    /* Subtle Paper Grain Overlay for Parchment Cards */
+    .paper-surface {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .paper-surface::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+      pointer-events: none;
+      border-radius: inherit;
+      z-index: 1;
+    }
+
+    .paper-surface > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Polaroid Card */
+    .polaroid {
+      background: var(--parchment);
+      color: var(--ink-dark);
+      padding: 18px 18px 20px;
+      border-radius: 18px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+      transform: rotate(2.2deg);
+      transition: transform 0.2s ease-out;
+      position: relative;
+    }
+
+    .tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 100px;
+      height: 24px;
+      background: rgba(229, 164, 91, 0.78);
+      border-radius: 3px;
+      z-index: 3;
+    }
+
+    .polaroid-frame {
+      background: var(--forest);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .polaroid-frame img {
+      max-width: 100%;
+      max-height: 245px;
+      object-fit: contain;
+      animation: gentleFloat 5s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(1.2deg); }
+    }
+
+    .polaroid-foot {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    /* Doodled Backing Pill Strip */
+    .perk-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 52px;
+    }
+
+    .perk-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--amber);
+      margin-right: 6px;
+    }
+
+    .perk-tag {
+      background: var(--forest-mid);
+      border: 1px dashed var(--line);
+      color: var(--parchment);
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .perk-tag:nth-child(even) { transform: rotate(-1.2deg); }
+    .perk-tag:nth-child(odd) { transform: rotate(1deg); }
+
+    .perk-tag:hover {
+      transform: rotate(0deg) translateY(-2px);
+      border-color: var(--moss);
+      color: var(--moss);
+    }
+
+    /* Interactive Field Journal */
+    .journal {
+      background: var(--parchment);
+      color: var(--ink-dark);
+      border-radius: 24px;
+      padding: 36px;
+      margin-bottom: 44px;
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .journal-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px dashed rgba(28, 34, 25, 0.18);
+    }
+
+    .journal-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.5rem, 3vw, 2.05rem);
+      font-weight: 800;
+    }
+
+    .journal-header span {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      color: #4E733D;
+      font-weight: 700;
+    }
+
+    .tab-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      background: var(--parchment-tint);
+      color: var(--ink-dark);
+      border: 1.5px solid rgba(28, 34, 25, 0.14);
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-2px);
+      border-color: #4E733D;
+    }
+
+    .tab-btn.active {
+      background: var(--forest);
+      color: var(--parchment);
+      border-color: var(--forest);
+      box-shadow: 0 4px 0 var(--moss);
+    }
+
+    .tab-panel {
+      display: none;
+      background: #FAF7F0;
+      border: 1px solid rgba(28, 34, 25, 0.1);
+      border-radius: 16px;
+      padding: 26px;
+      animation: pageFlip 0.3s ease;
+    }
+
+    .tab-panel.active {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @keyframes pageFlip {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-panel h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: var(--ink-dark);
+    }
+
+    .tab-panel p {
+      color: #3B4436;
+      font-size: 0.96rem;
+    }
+
+    .stamp-card {
+      background: var(--parchment-tint);
+      border: 1.5px dashed rgba(28, 34, 25, 0.25);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stamp-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.35rem;
+      color: #4E733D;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stamp-value {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink-dark);
+    }
+
+    /* Staggered Two-Column Scrapbook Row */
+    .scrapbook-row {
+      display: grid;
+      grid-template-columns: 1.22fr 0.78fr;
+      gap: 28px;
+      margin-bottom: 44px;
+      align-items: start;
+    }
+
+    .about-card {
+      background: var(--forest-mid);
+      border: 1.5px dashed var(--line);
+      border-radius: 22px;
+      padding: 32px;
+    }
+
+    .about-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    /* Interactive Little Knight Mascot */
+    .knight-wrap {
+      position: relative;
+      flex-shrink: 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .knight-badge {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 16px;
+      border: 2.5px solid rgba(132, 181, 108, 0.55);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.45);
+      transform: rotate(3deg);
+      transform-origin: bottom center;
+      transition: transform 0.22s cubic-bezier(0.22, 1.4, 0.36, 1), border-color 0.2s ease;
+      display: block;
+    }
+
+    .knight-wrap:hover .knight-badge {
+      transform: rotate(-5deg) scale(1.07);
+      border-color: var(--amber);
+    }
+
+    @keyframes knightHop {
+      0% { transform: rotate(3deg) scale(1, 1) translateY(0); }
+      25% { transform: rotate(0deg) scale(1.12, 0.88) translateY(3px); }
+      55% { transform: rotate(-7deg) scale(0.95, 1.08) translateY(-14px); }
+      80% { transform: rotate(4deg) scale(1.04, 0.96) translateY(2px); }
+      100% { transform: rotate(-4deg) scale(1, 1) translateY(0); }
+    }
+
+    .knight-badge.hopping {
+      animation: knightHop 0.48s ease;
+    }
+
+    .knight-bubble {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      right: 0;
+      background: var(--parchment);
+      color: var(--ink-dark);
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 12px;
+      border: 1.5px solid var(--moss);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(6px) scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .knight-bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      right: 26px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--moss) transparent transparent transparent;
+    }
+
+    .knight-wrap:hover .knight-bubble,
+    .knight-bubble.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .section-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .about-card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      color: var(--parchment);
+      margin-bottom: 12px;
+    }
+
+    .about-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-size: 0.95rem;
+    }
+
+    .credits-list {
+      border-top: 1px dashed var(--line);
+      padding-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .credit-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: rgba(21, 26, 19, 0.55);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    .credit-row strong {
+      color: var(--parchment);
+    }
+
+    .credit-row span {
+      color: var(--moss);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .promise-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .promise-note {
+      background: var(--forest-card);
+      border: 1.5px solid rgba(132, 181, 108, 0.32);
+      border-radius: 18px;
+      padding: 20px 22px;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .promise-note:hover {
+      transform: translateY(-2px);
+      border-color: var(--moss);
+    }
+
+    .promise-kicker {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--moss);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .promise-note strong {
+      font-family: 'Fraunces', serif;
+      font-size: 1.12rem;
+      color: var(--parchment);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .promise-note span {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* Standalone Frosted-Glass "Our Games" Viewport */
+    .glass-viewport {
+      display: block;
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 44px;
+      border: 1px solid rgba(244, 239, 228, 0.24);
+      box-shadow: 0 24px 54px rgba(0, 0, 0, 0.5);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .glass-viewport:hover {
+      transform: translateY(-4px);
+      border-color: rgba(229, 164, 91, 0.65);
+      box-shadow: 0 28px 62px rgba(0, 0, 0, 0.62);
+    }
+
+    .glass-underlayer {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 22% 35%, rgba(132, 181, 108, 0.28), transparent 50%),
+        radial-gradient(circle at 80% 65%, rgba(229, 164, 91, 0.24), transparent 55%),
+        #182016;
+      filter: blur(8px);
+      transform: scale(1.06);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-right: 48px;
+      pointer-events: none;
+    }
+
+    .ghost-slate {
+      display: flex;
+      gap: 14px;
+      opacity: 0.55;
+    }
+
+    .ghost-tile {
+      width: 110px;
+      height: 82px;
+      border-radius: 12px;
+      background: var(--parchment);
+      border: 2px dashed rgba(28, 34, 25, 0.35);
+    }
+
+    .glass-pane {
+      position: relative;
+      z-index: 2;
+      background: rgba(24, 31, 22, 0.58);
+      backdrop-filter: blur(13px);
+      -webkit-backdrop-filter: blur(13px);
+      padding: 36px 38px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .glass-kicker {
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .glass-pane h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      color: var(--parchment);
+      margin-bottom: 8px;
+    }
+
+    .glass-pane p {
+      color: var(--ink-light);
+      opacity: 0.9;
+      max-width: 52ch;
+      font-size: 0.96rem;
+    }
+
+    .glass-btn {
+      background: rgba(244, 239, 228, 0.94);
+      color: var(--ink-dark);
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 14px 22px;
+      border-radius: 14px;
+      box-shadow: 0 4px 0 var(--amber);
+      white-space: nowrap;
+      transition: transform 0.15s ease;
+    }
+
+    .glass-viewport:hover .glass-btn {
+      transform: translateX(3px);
+    }
+
+    /* Pitch Banner */
+    .invite-box {
+      background: var(--forest-card);
+      border: 1.5px dashed var(--line);
+      border-radius: 22px;
+      padding: 36px;
+      margin-bottom: 52px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .invite-box h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.65rem;
+      color: var(--parchment);
+      margin-bottom: 6px;
+    }
+
+    .invite-box p {
+      color: var(--muted);
+      max-width: 54ch;
+    }
+
+    .pitch-hints {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .pitch-hint {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--parchment);
+      background: rgba(21, 26, 19, 0.55);
+      border: 1px dashed var(--line);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    /* Footer & Copy Email Toast */
+    footer {
+      border-top: 1.5px dashed var(--line);
+      padding: 28px 0 44px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .copy-email {
+      background: none;
+      border: none;
+      color: var(--parchment);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline dotted var(--moss);
+      text-underline-offset: 4px;
+    }
+
+    .copy-email:hover {
+      color: var(--amber);
+    }
+
+    #copy-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--parchment);
+      color: var(--ink-dark);
+      font-family: 'Caveat', cursive;
+      font-size: 1.35rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      border: 2px solid var(--moss);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 90;
+    }
+
+    #copy-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .tab-panel.active,
+      .scrapbook-row {
+        grid-template-columns: 1fr;
+      }
+
+      .polaroid {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="welcome-screen" title="Click anywhere to skip">
+    <img src="sword-ivy.png" alt="Ivy Forge Games Emblem" class="intro-emblem" onerror="this.style.display='none'" />
+    <div class="intro-title">Ivy Forge Games</div>
+    <div class="intro-sub">Pull up a chair — opening the studio...</div>
+  </div>
+
+  <canvas id="fireflies"></canvas>
+  <div id="copy-toast">Copied hello@ivyforgegames.com! 🌿</div>
+
+  <div class="wrap">
+    <header>
+      <div class="nav-bar">
+        <div class="brand" id="replay-intro" title="Click to replay welcome animation">
+          <span>Ivy Forge Games</span>
+          <span class="tag-pill">UK Indie Label</span>
+        </div>
+        <nav>
+          <a href="#journal">Field Notes</a>
+          <a href="games.html">Our Games</a>
+          <a href="#about">About &amp; Credits</a>
+          <a href="#pitch">Submit Build</a>
+          <a href="https://discord.gg/5h7meEPnCH" target="_blank" rel="noopener noreferrer">Discord ↗</a>
+          <button type="button" class="sfx-toggle" id="sfx-btn" aria-pressed="false">SFX: Off</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <span class="scribble">A small UK label helping indie games cross the line ✦</span>
+          <h1>Helping you get your game <em>out there.</em></h1>
+          <p class="hero-copy">
+            Whatever game you are building, if your game is 80–95% complete and you aren't sure where to go next, we help for the final stretch with marketing, porting, fee coverage, hands on QA, and creator outreach.
+          </p>
+          <div class="btn-row">
+            <a
+              href="https://tally.so/r/e5R5NO"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary"
+            >
+              Pitch to us ↗
+            </a>
+            <button type="button" class="btn-secondary" id="hero-copy-email">
+              Copy hello@ivyforgegames.com
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="polaroid paper-surface" id="polaroid-card">
+            <div class="tape"></div>
+            <div class="polaroid-frame">
+              <img src="sword-ivy.png" alt="Hand-drawn sword wrapped in ivy" onerror="this.style.display='none'" />
+            </div>
+            <div class="polaroid-foot">
+              <span>Ivy Forge Games</span>
+              <span>UK • Est. 2024 🌿</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="perk-strip">
+        <span class="perk-label">What we bring:</span>
+        <span class="perk-tag">Any Genre Welcome</span>
+        <span class="perk-tag">Up to £500 Fee Support</span>
+        <span class="perk-tag">Hands On QA</span>
+        <span class="perk-tag">Steamworks Setup</span>
+        <span class="perk-tag">Creator Outreach</span>
+      </div>
+
+      <section id="journal" class="journal paper-surface">
+        <div class="journal-header">
+          <h2>Studio Field Notes</h2>
+          <span>Flip through how we work →</span>
+        </div>
+
+        <div class="tab-buttons">
+          <button type="button" class="tab-btn active" data-tab="fees">01. Launch Fee Help</button>
+          <button type="button" class="tab-btn" data-tab="qa">02. Hands On QA</button>
+          <button type="button" class="tab-btn" data-tab="creators">03. Creator Outreach</button>
+          <button type="button" class="tab-btn" data-tab="fit">04. Who It Fits</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-fees">
+          <div>
+            <h3>Don't let storefront fees stall your release</h3>
+            <p>
+              Steam Direct and launch setup costs add up right when you're trying to finish. We'll cover up to £500 per game so you aren't paying out of pocket at the last hurdle.
+            </p>
+          </div>
+          <div class="stamp-card">
+            <span class="stamp-label">Direct Support Cap</span>
+            <div class="stamp-value">Up to £500 / Game</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-qa">
+          <div>
+            <h3>Real playthroughs, honest notes</h3>
+            <p>
+              When you've stared at your own project for a year, it's impossible to spot every soft lock or awkward menu. We test your build properly across controllers and resolutions so launch day feels smooth.
+            </p>
+          </div>
+          <div class="stamp-card">
+            <span class="stamp-label">Testing Focus</span>
+            <div class="stamp-value">Bugs, UX &amp; Polish</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-creators">
+          <div>
+            <h3>Getting eyes on what you built</h3>
+            <p>
+              Great indie games die quietly when nobody knows they exist. We handle key waves and personal pitches to streamers and YouTubers who match your audience.
+            </p>
+          </div>
+          <div class="stamp-card">
+            <span class="stamp-label">Launch Push</span>
+            <div class="stamp-value">Keys &amp; Streamer Outreach</div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-fit">
+          <div>
+            <h3>Any genre, as long as it's 80–95% there</h3>
+            <p>
+              We're not funding blank slate prototypes YET. If you already have a solid, playable build and want backup for the final push to launch, that's where we fit.
+            </p>
+          </div>
+          <div class="stamp-card">
+            <span class="stamp-label">Sweet Spot</span>
+            <div class="stamp-value">80–95% Complete</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scrapbook-row">
+        <div id="about" class="about-card">
+          <div class="about-top">
+            <div>
+              <span class="section-eyebrow">Who we are &amp; where we've been ✦</span>
+              <h2>Independent roots since August 2024</h2>
+            </div>
+            <div class="knight-wrap" id="knight-mascot" title="Click me!">
+              <div class="knight-bubble" id="knight-bubble">Ready for QA duty! 🛡️</div>
+              <img src="knight.png" alt="Ivy Forge Games knight mascot" class="knight-badge" id="knight-img" onerror="this.parentElement.style.display='none'" />
+            </div>
+          </div>
+          <p>
+            Founded in August 2024 as an independent UK label, IFG brings together hands on game direction, design, QA testing, and creator outreach to help small teams get their games across the finish line.
+          </p>
+          <div class="credits-list">
+            <div class="credit-row">
+              <strong>C-Smash VRS</strong>
+              <span>Design &amp; QA</span>
+            </div>
+            <div class="credit-row">
+              <strong>Samsara</strong>
+              <span>Design &amp; QA</span>
+            </div>
+            <div class="credit-row">
+              <strong>10 Second Ginger</strong>
+              <span>Game Direction</span>
+            </div>
+            <div class="credit-row">
+              <strong>The Last Worker</strong>
+              <span>QA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="promise-stack">
+          <div class="promise-note">
+            <span class="promise-kicker">01. Your creation stays yours</span>
+            <strong>100% IP Retained</strong>
+            <span>Your game, your world, your rights. Always.</span>
+          </div>
+          <div class="promise-note">
+            <span class="promise-kicker">02. Zero dev-side bills</span>
+            <strong>No Upfront Fees</strong>
+            <span>Pitching and reviewing builds costs you nothing.</span>
+          </div>
+          <div class="promise-note">
+            <span class="promise-kicker">03. Plain-English terms</span>
+            <strong>Fair, Clear Rev-Share</strong>
+            <span>Plain-English terms with no sneaky catches.</span>
+          </div>
+        </div>
+      </section>
+
+      <a href="games.html" class="glass-viewport">
+        <div class="glass-underlayer">
+          <div class="ghost-slate">
+            <div class="ghost-tile"></div>
+            <div class="ghost-tile"></div>
+          </div>
+        </div>
+        <div class="glass-pane">
+          <div>
+            <span class="glass-kicker">The Lineup ✦</span>
+            <h2>Our Games</h2>
+            <p>
+              Our debut slate is currently under construction as we bring on our first near complete indie builds. Step through the glass to open the games page.
+            </p>
+          </div>
+          <span class="glass-btn">Peek Inside Our Games →</span>
+        </div>
+      </a>
+
+      <section id="pitch" class="invite-box">
+        <div>
+          <h2>Got a build nearly ready to ship?</h2>
+          <p>Hop into our Discord pitch channel or send your build straight to <strong>hello@ivyforgegames.com</strong>! Our dedicated submission form is opening shortly.</p>
+          <div class="pitch-hints">
+            <span class="pitch-hint">✦ Playable build or key</span>
+            <span class="pitch-hint">✦ Short gameplay clip</span>
+            <span class="pitch-hint">✦ Rough release window</span>
+          </div>
+        </div>
+        <div class="btn-row">
+          <a
+            href="https://discord.gg/5h7meEPnCH"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary"
+          >
+            Join Discord to Pitch ↗
+          </a>
+          <button type="button" class="btn-secondary" id="pitch-copy-email">
+            Copy Pitch Email
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Made with care by Ivy Forge Games • ivyforgegames.com</span>
+      <button type="button" class="copy-email" id="copy-email-btn" title="Click to copy email">
+        hello@ivyforgegames.com
+      </button>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const welcome = document.getElementById('welcome-screen');
+      let closeTimer = null;
+      let doneTimer = null;
+
+      function closeWelcome() {
+        if (!welcome) return;
+        welcome.classList.add('hide');
+        if (doneTimer) clearTimeout(doneTimer);
+        doneTimer = setTimeout(() => {
+          welcome.classList.add('done');
+        }, 520);
+      }
+
+      function playWelcome() {
+        if (!welcome) return;
+        if (closeTimer) clearTimeout(closeTimer);
+        if (doneTimer) clearTimeout(doneTimer);
+        welcome.classList.remove('done', 'hide');
+        void welcome.offsetWidth;
+        closeTimer = setTimeout(closeWelcome, 1100);
+      }
+
+      if (welcome) {
+        welcome.addEventListener('click', closeWelcome);
+        playWelcome();
+        setTimeout(() => {
+          welcome.classList.add('hide', 'done');
+        }, 2200);
+      }
+
+      const replayBtn = document.getElementById('replay-intro');
+      if (replayBtn) {
+        replayBtn.addEventListener('click', () => {
+          playCosyClick();
+          playWelcome();
+        });
+      }
+    })();
+
+    let sfxEnabled = false;
+    let audioCtx = null;
+    const sfxBtn = document.getElementById('sfx-btn');
+
+    function playCosyClick(pitch = 320) {
+      if (!sfxEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(pitch * 0.45, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.055);
+      } catch (_) {}
+    }
+
+    if (sfxBtn) {
+      sfxBtn.addEventListener('click', () => {
+        sfxEnabled = !sfxEnabled;
+        sfxBtn.textContent = sfxEnabled ? 'SFX: On ♪' : 'SFX: Off';
+        sfxBtn.classList.toggle('on', sfxEnabled);
+        sfxBtn.setAttribute('aria-pressed', String(sfxEnabled));
+        if (sfxEnabled) playCosyClick();
+      });
+    }
+
+    // Little Knight Mascot Hop & Speech Bubble
+    const knightWrap = document.getElementById('knight-mascot');
+    const knightImg = document.getElementById('knight-img');
+    const knightBubble = document.getElementById('knight-bubble');
+    const knightQuips = [
+      'Ready for QA duty! 🛡️',
+      'You keep 100% of your IP! 🌿',
+      'Got a build at 80–95%? ⚔️',
+      'No scary suits allowed here!'
+    ];
+    let quipIndex = 0;
+    let bubbleTimeout = null;
+
+    if (knightWrap && knightImg && knightBubble) {
+      knightWrap.addEventListener('click', () => {
+        playCosyClick(440);
+        quipIndex = (quipIndex + 1) % knightQuips.length;
+        knightBubble.textContent = knightQuips[quipIndex];
+        knightBubble.classList.add('show');
+        knightImg.classList.remove('hopping');
+        void knightImg.offsetWidth;
+        knightImg.classList.add('hopping');
+        if (bubbleTimeout) clearTimeout(bubbleTimeout);
+        bubbleTimeout = setTimeout(() => {
+          knightBubble.classList.remove('show');
+        }, 2200);
+      });
+    }
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        playCosyClick();
+        tabBtns.forEach((b) => b.classList.remove('active'));
+        tabPanels.forEach((p) => p.classList.remove('active'));
+        btn.classList.add('active');
+        const panel = document.getElementById('tab-' + btn.dataset.tab);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    const polaroid = document.getElementById('polaroid-card');
+    if (polaroid) {
+      polaroid.addEventListener('mousemove', (e) => {
+        const rect = polaroid.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        polaroid.style.transform = `rotate(${2.2 + x * 5}deg) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+      });
+      polaroid.addEventListener('mouseleave', () => {
+        polaroid.style.transform = 'rotate(2.2deg)';
+      });
+    }
+
+    const toast = document.getElementById('copy-toast');
+    function copyStudioEmail() {
+      playCosyClick();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('hello@ivyforgegames.com').catch(() => {});
+      }
+      if (toast) {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2400);
+      }
+    }
+
+    ['copy-email-btn', 'hero-copy-email', 'pitch-copy-email'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', copyStudioEmail);
+    });
+
+    try {
+      const canvas = document.getElementById('fireflies');
+      const ctx = canvas && canvas.getContext('2d');
+      if (canvas && ctx) {
+        let w = (canvas.width = window.innerWidth);
+        let h = (canvas.height = window.innerHeight);
+        let flies = Array.from({ length: 26 }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 2 + 1,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: -Math.random() * 0.35 - 0.1,
+          alpha: Math.random() * 0.5 + 0.2
+        }));
+
+        window.addEventListener('resize', () => {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        });
+
+        (function drawFlies() {
+          ctx.clearRect(0, 0, w, h);
+          flies.forEach((f) => {
+            f.x += f.vx;
+            f.y += f.vy;
+            if (f.y < -10) f.y = h + 10;
+            if (f.x < -10) f.x = w + 10;
+            if (f.x > w + 10) f.x = -10;
+
+            ctx.beginPath();
+            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(229, 164, 91, ${f.alpha})`;
+            ctx.fill();
+          });
+          requestAnimationFrame(drawFlies);
+        })();
+      }
+    } catch (_) {}
+  </script>
+</body>
+</html>
